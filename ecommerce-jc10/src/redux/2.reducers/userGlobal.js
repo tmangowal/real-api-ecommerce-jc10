@@ -4,6 +4,8 @@ export default (state = INITIAL_STATE, action) => {
     switch(action.type){
         case 'TESTING':
             return {...INITIAL_STATE, username : 'TEST'}
+        case 'LOGIN_SUCCESS':
+            return {...INITIAL_STATE, username : action.payload.username, id : action.payload.id, role : action.payload.role}
         default:
             return state
     }
