@@ -1,0 +1,34 @@
+{
+    "users" : [
+        {
+            "username" : "admin",
+            "password" : "password",
+            "role" : "admin",
+            "id" : 1
+        },
+        {
+            "username" : "seto",
+            "password" : "password",
+            "role" : "user",
+            "id" : 2
+        },
+        {
+            "username" : "budi",
+            "password" : "password",
+            "role" : "user",
+            "id" : 3
+        },
+        {
+            "username" : "anton",
+            "password" : "password",
+            "role" : "admin",
+            "id" : 4
+        },
+        {
+            "username" : "admin",
+            "password" : "password",
+            "role" : "admin",
+            "id" : 17
+        }
+    ]
+}
