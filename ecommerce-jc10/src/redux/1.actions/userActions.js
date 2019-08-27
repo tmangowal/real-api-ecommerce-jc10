@@ -30,9 +30,9 @@ export const onLogin = (userObject) => {
                 dispatch({
                     type : 'LOGIN_SUCCESS',
                     payload : {
-                        username : res.data[0].username,
-                        role : res.data[0].role,
-                        id : res.data[0].id
+                        a : res.data[0].username,
+                        b : res.data[0].role,
+                        c : res.data[0].id
                     }
                 })
             }
@@ -43,6 +43,74 @@ export const onLogin = (userObject) => {
     }
 }
 
-export const onLogout = () => {
+export const onRegister = (userObject) => {
+    return (dispatch) => {
+        dispatch({
+            type : 'IS_LOADING'
+        })
 
+        Axios.get(urlApi + 'users', {
+            params : {
+                username : userObject.username
+            }
+        })
+        .then((res) => {
+            if(res.data.length > 0){
+                dispatch({
+                    type : 'USERNAME_UDAH_ADA',
+                    hasil : 'Username taken'
+                })
+            }else{
+                userObject.role = 'user'
+                Axios.post(urlApi + 'users', userObject)
+                .then((res) => {
+                    dispatch({
+                        type : 'LOGIN_SUCCESS',
+                        payload : {
+                            a : res.data.username,
+                            b : res.data.role,
+                            c : res.data.id
+                        }
+                    })
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+            }
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }
+}
+
+export const keepLogin = (cookieData) => {
+    return (dispatch) => {
+        Axios.get(urlApi + 'users', {
+            params : {
+                username : cookieData
+            }
+        })
+        .then((res) => {
+            dispatch({
+                type : 'KEEP_LOGIN',
+                payload : {
+                    username : res.data[0].username,
+                    role : res.data[0].role,
+                    id : res.data[0].id
+                }
+            })
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }
+}
+
+export const resetUser = () => {
+    return (dispatch) => {
+        dispatch({
+            type : 'RESET_USER'
+        })
+    }
 }

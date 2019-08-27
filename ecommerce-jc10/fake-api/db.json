@@ -1,34 +1,62 @@
 {
-    "users" : [
-        {
-            "username" : "admin",
-            "password" : "password",
-            "role" : "admin",
-            "id" : 1
-        },
-        {
-            "username" : "seto",
-            "password" : "password",
-            "role" : "user",
-            "id" : 2
-        },
-        {
-            "username" : "budi",
-            "password" : "password",
-            "role" : "user",
-            "id" : 3
-        },
-        {
-            "username" : "anton",
-            "password" : "password",
-            "role" : "admin",
-            "id" : 4
-        },
-        {
-            "username" : "admin",
-            "password" : "password",
-            "role" : "admin",
-            "id" : 17
-        }
-    ]
+  "users": [
+    {
+      "username": "admin",
+      "password": "password",
+      "role": "admin",
+      "id": 1
+    },
+    {
+      "username": "seto",
+      "password": "password",
+      "role": "user",
+      "id": 2
+    },
+    {
+      "username": "budi",
+      "password": "password",
+      "role": "user",
+      "id": 3
+    },
+    {
+      "username": "anton",
+      "password": "password",
+      "role": "admin",
+      "id": 4
+    },
+    {
+      "username": "admin",
+      "password": "password",
+      "role": "admin",
+      "id": 17
+    },
+    {
+      "username": "user2",
+      "password": "password",
+      "email": "mail@mail.com",
+      "role": "user",
+      "id": 18
+    },
+    {
+      "username": "user3",
+      "password": "password",
+      "email": "testing@mail.com",
+      "role": "user",
+      "id": 19
+    },
+    {
+      "username": "",
+      "password": "",
+      "email": "",
+      "role": "user",
+      "id": 20
+    },
+    {
+      "username": "user17",
+      "password": "password",
+      "email": "testing@hore.com",
+      "role": "user",
+      "id": 21
+    }
+  ]
 }

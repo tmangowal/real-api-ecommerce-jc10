@@ -12,10 +12,18 @@ import {
     DropdownMenu,
     DropdownItem } from 'reactstrap';
 import {connect} from 'react-redux'
+import Cookie from 'universal-cookie'
+import { resetUser } from "./../../redux/1.actions";
 
+let cookieObj = new Cookie()
 class NavbarComp extends Component {
     state = {
         navbarOpen : false
+    }
+
+    onBtnLogout = () => {
+        cookieObj.remove('userData')
+        this.props.resetUser()
     }
 
     render() {
@@ -62,7 +70,7 @@ class NavbarComp extends Component {
                                         History
                                     </DropdownItem>
                                     <DropdownItem divider />
-                                    <DropdownItem>
+                                    <DropdownItem onClick={this.onBtnLogout}>
                                         Logout
                                     </DropdownItem>
                                 </DropdownMenu>
@@ -81,4 +89,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(NavbarComp)
+export default connect(mapStateToProps, {resetUser})(NavbarComp)

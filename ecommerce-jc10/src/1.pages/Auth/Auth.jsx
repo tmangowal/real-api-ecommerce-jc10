@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import './Auth.css'
 // 1. Import action itu sendiri
-import {onLogin, onLogout} from './../../redux/1.actions'
+import {onLogin, onRegister} from './../../redux/1.actions'
 // 2. Import connect dari react-redux
 import {connect} from 'react-redux'
+import Cookie from 'universal-cookie'
+import {Redirect} from 'react-router-dom'
+
+let cookieObj = new Cookie()
 
 class Auth extends Component {
     state = {
@@ -16,6 +20,10 @@ class Auth extends Component {
         loginPassword: ''
     }
 
+    componentWillReceiveProps(newProps){
+        cookieObj.set('userData', newProps.username, {path : '/'})
+    }
+
     onLoginBtnHandler = () => {
         // let loginObj = {
         //     username : this.state.loginUsername,
@@ -25,13 +33,27 @@ class Auth extends Component {
         this.props.onLogin({asalNama : this.state.loginUsername, asalKunci : this.state.loginPassword})
     }
 
+    onRegisterBtnHandler = () => {
+        let registerObj = {
+            username : this.state.registerUsername,
+            password : this.state.registerPassword,
+            email : this.state.registerEmail
+        }
+
+        this.props.onRegister(registerObj)
+    }
+
     render() {
+        if(this.props.username !== ''){
+            return <Redirect to="/" exact />
+        }
         return (
             <div className="container auth">
                 {
-                    this.props.isLoading ?
-                    <h3 className="text-white">LOADING ...</h3>
-                    : 
+                    this.props.message !== ''
+                    ?
+                    <h3>{this.props.message}</h3>
+                    :
                     null
                 }
                 <div className="row">
@@ -58,30 +80,38 @@ class Auth extends Component {
                                 <div className="row">
                                     <div className="col-6">
                                         <div className="form-group">
-                                            <input type="text" className="form-control" placeholder="Username"/>
+                                            <input type="text" onChange={(e) => this.setState({registerUsername : e.target.value})} className="form-control" placeholder="Username"/>
                                         </div>
                                     </div>
                                     <div className="col-6">
                                         <div className="form-group">
-                                            <input type="text" className="form-control" placeholder="Email"/>
+                                            <input type="text" onChange={(e) => this.setState({registerEmail : e.target.value})} className="form-control" placeholder="Email"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="col-6">
                                         <div className="form-group">
-                                            <input type="password" className="form-control" placeholder="Password"/>
+                                            <input type="password" onChange={(e) => this.setState({registerPassword : e.target.value})} className="form-control" placeholder="Password"/>
                                         </div>
                                     </div>
                                     <div className="col-6">
                                         <div className="form-group">
-                                            <input type="password" className="form-control" placeholder="Repeat Password"/>
+                                            <input type="password" onChange={(e) => this.setState({repeatPassword : e.target.value})} className="form-control" placeholder="Repeat Password"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="col-12">
-                                        <input type="button" className="btn float-right btn-register" value="Register"/>
+                                        {
+                                            !this.props.isLoading
+                                            ?
+                                            <input type="button" onClick={this.onRegisterBtnHandler} className="btn float-right btn-register" value="Register"/>
+                                            :
+                                            <div className="spinner-border text-primary">
+                                                <span className="sr-only">Loading...</span>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -116,9 +146,11 @@ class Auth extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        isLoading : state.user.loading
+        isLoading : state.user.loading,
+        message : state.user.msg,
+        username : state.user.username
     }
 }
 
 // 3. connect (<MAPSTATETOPROPS>, {<ACTION>})(<COMPONENT>)
-export default connect(mapStateToProps, {onLogin, onLogout})(Auth);
+export default connect(mapStateToProps, {onLogin, onRegister})(Auth);
