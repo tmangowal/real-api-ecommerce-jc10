@@ -28,6 +28,12 @@ class Auth extends Component {
     render() {
         return (
             <div className="container auth">
+                {
+                    this.props.isLoading ?
+                    <h3 className="text-white">LOADING ...</h3>
+                    : 
+                    null
+                }
                 <div className="row">
                     <div className="col-3 text-center auth-left">
                         <h3>Welcome!</h3>
@@ -108,5 +114,11 @@ class Auth extends Component {
     }
 }
 
+const mapStateToProps = (state) => {
+    return {
+        isLoading : state.user.loading
+    }
+}
+
 // 3. connect (<MAPSTATETOPROPS>, {<ACTION>})(<COMPONENT>)
-export default connect(null, {onLogin, onLogout})(Auth);
+export default connect(mapStateToProps, {onLogin, onLogout})(Auth);

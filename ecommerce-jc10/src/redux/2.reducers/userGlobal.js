@@ -6,6 +6,8 @@ export default (state = INITIAL_STATE, action) => {
             return {...INITIAL_STATE, username : 'TEST'}
         case 'LOGIN_SUCCESS':
             return {...INITIAL_STATE, username : action.payload.username, id : action.payload.id, role : action.payload.role}
+        case 'IS_LOADING':
+            return {...INITIAL_STATE, loading : true}
         default:
             return state
     }

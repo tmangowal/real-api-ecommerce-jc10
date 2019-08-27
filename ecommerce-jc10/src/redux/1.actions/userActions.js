@@ -13,6 +13,10 @@ export const onLogin = (userObject) => {
      */
 
     return (dispatch) => {
+        dispatch({
+            type : 'IS_LOADING'
+        })
+
         Axios.get(urlApi + 'users', {
             params : {
                 // properti di kiri adalah column dari Database
