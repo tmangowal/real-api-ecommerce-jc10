@@ -2,11 +2,22 @@ import Axios from 'axios'
 import {urlApi} from '../../3.helpers/database'
 
 export const onLogin = (userObject) => {
-    return(dispatch) => {
+    /**
+     * sama sepeerti loginObj
+     * userObject = { 
+     *      username : state/inputan,
+     *      password : state/inputan
+     * }
+     * 
+     * userObject = {asalNama : this.state.loginUsername, asalKunci : this.state.loginPassword}
+     */
+
+    return (dispatch) => {
         Axios.get(urlApi + 'users', {
             params : {
-                username : userObject.username,
-                password : userObject.password
+                // properti di kiri adalah column dari Database
+                username : userObject.asalNama,
+                password : userObject.asalKunci
             }
         })
         .then((res) => {
@@ -26,4 +37,8 @@ export const onLogin = (userObject) => {
             console.log(err)
         })
     }
+}
+
+export const onLogout = () => {
+
 }

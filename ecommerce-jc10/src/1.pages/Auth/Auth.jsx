@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './Auth.css'
-import {onLogin} from './../../redux/1.actions'
+// 1. Import action itu sendiri
+import {onLogin, onLogout} from './../../redux/1.actions'
+// 2. Import connect dari react-redux
 import {connect} from 'react-redux'
 
 class Auth extends Component {
@@ -15,12 +17,12 @@ class Auth extends Component {
     }
 
     onLoginBtnHandler = () => {
-        let loginObj = {
-            username : this.state.loginUsername,
-            password : this.state.loginPassword
-        }
-
-        this.props.onLogin(loginObj)
+        // let loginObj = {
+        //     username : this.state.loginUsername,
+        //     password : this.state.loginPassword
+        // }
+        // this.props.onLogout()
+        this.props.onLogin({asalNama : this.state.loginUsername, asalKunci : this.state.loginPassword})
     }
 
     render() {
@@ -106,4 +108,5 @@ class Auth extends Component {
     }
 }
 
-export default connect(null, {onLogin})(Auth);
+// 3. connect (<MAPSTATETOPROPS>, {<ACTION>})(<COMPONENT>)
+export default connect(null, {onLogin, onLogout})(Auth);
