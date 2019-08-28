@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux'
 
+// GIT PULL ORIGIN MASTER
 class Home extends Component {
     render() {
         return (
@@ -9,7 +11,7 @@ class Home extends Component {
                         <div className="input-group mb-2">
                             <input type="text" ref="searchBook" className="form-control" placeholder="Masukkan kata kunci ... "  />
                             <div className="input-group-append">
-                                <button className="btn btn-info" type="button" id="button-addon2" ><i className="fas fa-search" /></button>
+                                <button className="btn btn-info" type="button" id="button-addon2" >Go</button>
                             </div>
                         </div> 
                         <div className="card p-2">
@@ -28,7 +30,11 @@ class Home extends Component {
                             </form>
 
                         </div>
-                        
+                    </div>
+                    <div className="col-lg-9 mt-4">
+                        {
+                            this.props.username ? <h3>Welcome, {this.props.username}</h3> : null
+                        }
                     </div>
                 </div>
             </div>
@@ -36,4 +42,8 @@ class Home extends Component {
     }
 }
 
-export default Home;
+export default connect(state => {
+    return {
+        username : state.user.username
+    }
+})(Home)

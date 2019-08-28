@@ -45,6 +45,26 @@ class NavbarComp extends Component {
                                     <NavItem>
                                         <NavLink>{this.props.userObj.role}</NavLink>
                                     </NavItem>
+                                    <UncontrolledDropdown nav inNavbar>
+                                        <DropdownToggle nav caret>
+                                            Options
+                                        </DropdownToggle>
+                                        <DropdownMenu right>
+                                            <DropdownItem>
+                                                Edit Profile
+                                            </DropdownItem>
+                                            <DropdownItem>
+                                                Cart
+                                            </DropdownItem>
+                                            <DropdownItem>
+                                                History
+                                            </DropdownItem>
+                                            <DropdownItem divider />
+                                            <DropdownItem onClick={this.onBtnLogout}>
+                                                Logout
+                                            </DropdownItem>
+                                        </DropdownMenu>
+                                    </UncontrolledDropdown>
                                 </>
                                 :
                                 <>
@@ -56,26 +76,6 @@ class NavbarComp extends Component {
                                     </NavItem>
                                 </>
                             }
-                            <UncontrolledDropdown nav inNavbar>
-                                <DropdownToggle nav caret>
-                                    Options
-                                </DropdownToggle>
-                                <DropdownMenu right>
-                                    <DropdownItem>
-                                        Edit Profile
-                                    </DropdownItem>
-                                    <DropdownItem>
-                                        Cart
-                                    </DropdownItem>
-                                    <DropdownItem>
-                                        History
-                                    </DropdownItem>
-                                    <DropdownItem divider />
-                                    <DropdownItem onClick={this.onBtnLogout}>
-                                        Logout
-                                    </DropdownItem>
-                                </DropdownMenu>
-                            </UncontrolledDropdown>
                         </Nav>
                     </Collapse>
                 </Navbar>
