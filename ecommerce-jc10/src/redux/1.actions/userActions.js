@@ -1,5 +1,6 @@
 import Axios from 'axios'
 import {urlApi} from '../../3.helpers/database'
+import swal from 'sweetalert'
 
 export const onLogin = (userObject) => {
     /**
@@ -39,6 +40,7 @@ export const onLogin = (userObject) => {
         })
         .catch((err) => {
             console.log(err)
+            swal('System Error', 'A problem has occured, please contact an administrator', 'error')
         })
     }
 }
@@ -72,6 +74,7 @@ export const onRegister = (userObject) => {
                             c : res.data.id
                         }
                     })
+                    swal('Success', 'Registration Succesful!', 'success')
                 })
                 .catch((err) => {
                     console.log(err)

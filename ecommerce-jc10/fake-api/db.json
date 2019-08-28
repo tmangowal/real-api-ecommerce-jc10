@@ -57,9 +57,58 @@
       "email": "testing@hore.com",
       "role": "user",
       "id": 21
+    },
+    {
+      "username": "testing123",
+      "password": "123",
+      "email": "halo",
+      "role": "user",
+      "id": 22
+    },
+    {
+      "username": "halohalo",
+      "password": "password",
+      "email": "haloMail.com",
+      "role": "user",
+      "id": 23
+    },
+    {
+      "username": "t",
+      "password": "",
+      "email": "",
+      "role": "user",
+      "id": 24
+    },
+    {
+      "username": "tes",
+      "password": "",
+      "email": "",
+      "role": "user",
+      "id": 25
+    },
+    {
+      "username": "testing",
+      "password": "",
+      "email": "",
+      "role": "user",
+      "id": 26
+    },
+    {
+      "username": "1",
+      "password": "",
+      "email": "",
+      "role": "user",
+      "id": 27
+    },
+    {
+      "username": "testing1233",
+      "password": "123",
+      "email": "mail.com",
+      "role": "user",
+      "id": 28
     }
   ],
-  "products" : [
+  "products": [
     {
       "id": 1,
       "nama": "Kaos Polos Hitam",

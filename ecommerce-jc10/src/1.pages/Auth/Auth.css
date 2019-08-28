@@ -43,9 +43,13 @@
     cursor: pointer;
 }
 
-.active{
+.active-auth{
     background: #0062cc;
     border-radius: 15px;
     color: #fff;
     padding: 5px;
+}
+
+.invalid-input{
+    border : 1px solid red
 }

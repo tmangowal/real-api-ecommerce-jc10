@@ -1,8 +1,43 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux'
+import ProductBox from '../../2.components/General/ProductBox';
+import Axios from 'axios'
+import {urlApi} from '../../3.helpers/database'
+import swal from 'sweetalert'
+import Carousel from '../../2.components/General/Carousel'
 
 // GIT PULL ORIGIN MASTER
 class Home extends Component {
+    state = {
+        productData : []
+    }
+
+    
+
+    componentDidMount(){
+        this.getDataProducts()
+    }
+
+    getDataProducts = () => {
+        Axios.get(urlApi + 'products')
+        .then((res) => {
+            this.setState({productData : res.data})
+        })
+        .catch((err) => {
+            console.log(err)
+            swal('Error', 'System Error', 'error')
+        })
+    }
+
+    renderProducts = () => {
+        let jsx = this.state.productData.map(val => {
+            return(
+                <ProductBox nama={val.nama} harga={val.harga} discount={val.discount} img={val.img} id={val.id} />
+            )
+        })
+        return jsx
+    }
+
     render() {
         return (
             <div className="container">
@@ -32,9 +67,14 @@ class Home extends Component {
                         </div>
                     </div>
                     <div className="col-lg-9 mt-4">
-                        {
-                            this.props.username ? <h3>Welcome, {this.props.username}</h3> : null
-                        }
+                        <div >
+                            <Carousel />
+                        </div>
+                    </div>
+                </div>
+                <div className="container">
+                    <div className="row justify-content-center">
+                        {this.renderProducts()}
                     </div>
                 </div>
             </div>

@@ -7,6 +7,7 @@ import Auth from './1.pages/Auth/Auth';
 import Cookie from 'universal-cookie'
 import {connect} from 'react-redux'
 import {keepLogin} from './redux/1.actions'
+import ProductDetails from './1.pages/ProductDetails/ProductDetails';
 
 let cookieObj = new Cookie()
 class App extends Component {
@@ -25,6 +26,7 @@ class App extends Component {
         <Switch>
           <Route component={Home} path='/' exact />
           <Route component={Auth} path='/auth' exact />
+          <Route component={ProductDetails} path='/product-details/:id' exact />
         </Switch>
       </div>
     )

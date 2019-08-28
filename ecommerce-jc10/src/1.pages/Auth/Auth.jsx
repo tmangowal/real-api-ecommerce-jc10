@@ -6,6 +6,8 @@ import {onLogin, onRegister} from './../../redux/1.actions'
 import {connect} from 'react-redux'
 import Cookie from 'universal-cookie'
 import {Redirect} from 'react-router-dom'
+import swal from 'sweetalert';
+
 
 let cookieObj = new Cookie()
 
@@ -17,7 +19,8 @@ class Auth extends Component {
         repeatPassword : '',
         registerEmail : '',
         loginUsername : '',
-        loginPassword: ''
+        loginPassword: '',
+        isSame : true
     }
 
     componentWillReceiveProps(newProps){
@@ -34,13 +37,44 @@ class Auth extends Component {
     }
 
     onRegisterBtnHandler = () => {
-        let registerObj = {
-            username : this.state.registerUsername,
-            password : this.state.registerPassword,
-            email : this.state.registerEmail
+        if(this.state.repeatPassword !== this.state.registerPassword || (this.state.repeatPassword == '' && this.state.registerPassword == '')){
+            this.setState({isSame : false})
         }
+        if(!this.state.registerEmail){
+            this.refs.registerEmail.className += ' invalid-input'
+        }
+        if(!this.state.registerUsername){
+            this.refs.registerUsername.className += ' invalid-input'
+        }
+        if(!this.state.repeatPassword){
+            this.refs.repeatPassword.className += ' invalid-input'
+        }
+        if(!this.state.registerPassword){
+            this.refs.registerPassword.className += ' invalid-input'
+        }
+        if(this.state.registerEmail && this.state.registerPassword && this.state.repeatPassword && this.state.registerUsername){
+            let registerObj = {
+                username : this.state.registerUsername,
+                password : this.state.registerPassword,
+                email : this.state.registerEmail
+            }
+    
+            this.props.onRegister(registerObj)
+        }else{
+            swal('input')
+        }
+    }
 
-        this.props.onRegister(registerObj)
+    validateInputRegister = () => {
+        
+    }
+
+    passwordChecker = () => {
+        if(!this.state.isSame){
+            return(
+                <div className="alert alert-danger">Password belom sama</div>
+            )
+        }
     }
 
     render() {
@@ -63,10 +97,10 @@ class Auth extends Component {
                         <br/>
                         <br/>
                         <div className="tab-auth">
-                            <div className={"d-inline-block m-1 text-center " + (this.state.page == "LOGIN" ? "active" : '')} onClick={() => this.setState({page : 'LOGIN'})}>
+                            <div className={"d-inline-block m-1 text-center " + (this.state.page == "LOGIN" ? "active-auth" : '')} onClick={() => this.setState({page : 'LOGIN'})}>
                                 Login
                             </div>
-                            <div className={"d-inline-block m-1 text-center " + (this.state.page == "REGISTER" ? 'active' : '')} onClick={() => this.setState({page : "REGISTER"})}>
+                            <div className={"d-inline-block m-1 text-center " + (this.state.page == "REGISTER" ? 'active-auth' : '')} onClick={() => this.setState({page : "REGISTER"})}>
                                 Register
                             </div>
                         </div>
@@ -80,29 +114,32 @@ class Auth extends Component {
                                 <div className="row">
                                     <div className="col-6">
                                         <div className="form-group">
-                                            <input type="text" onChange={(e) => this.setState({registerUsername : e.target.value})} className="form-control" placeholder="Username"/>
+                                            <input type="text" ref='registerUsername' onChange={(e) => this.setState({registerUsername : e.target.value})} className="form-control" placeholder="Username"/>
                                         </div>
                                     </div>
                                     <div className="col-6">
                                         <div className="form-group">
-                                            <input type="text" onChange={(e) => this.setState({registerEmail : e.target.value})} className="form-control" placeholder="Email"/>
+                                            <input type="text" ref="registerEmail" onChange={(e) => this.setState({registerEmail : e.target.value})} className="form-control" placeholder="Email"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="col-6">
                                         <div className="form-group">
-                                            <input type="password" onChange={(e) => this.setState({registerPassword : e.target.value})} className="form-control" placeholder="Password"/>
+                                            <input type="password" ref='registerPassword' onChange={(e) => this.setState({registerPassword : e.target.value})} className="form-control" placeholder="Password"/>
                                         </div>
                                     </div>
                                     <div className="col-6">
                                         <div className="form-group">
-                                            <input type="password" onChange={(e) => this.setState({repeatPassword : e.target.value})} className="form-control" placeholder="Repeat Password"/>
+                                            <input type="password" ref="repeatPassword" onChange={(e) => this.setState({repeatPassword : e.target.value})} className="form-control" placeholder="Repeat Password"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="row">
-                                    <div className="col-12">
+                                    <div className="col-8">
+                                        {this.passwordChecker()}
+                                    </div>
+                                    <div className="col-4">
                                         {
                                             !this.props.isLoading
                                             ?
