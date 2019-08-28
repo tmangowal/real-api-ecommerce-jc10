@@ -106,7 +106,7 @@ class Auth extends Component {
                                         {
                                             !this.props.isLoading
                                             ?
-                                            <input type="button" onClick={this.onRegisterBtnHandler} className="btn float-right btn-register" value="Register"/>
+                                            <input type="button" onClick={this.onRegisterBtnHandler} ref="btnLogin" className="btn float-right btn-register" value="Register"/>
                                             :
                                             <div className="spinner-border text-primary">
                                                 <span className="sr-only">Loading...</span>
@@ -132,7 +132,7 @@ class Auth extends Component {
                                 </div>
                                 <div className="row">
                                     <div className="col-12">
-                                        <input type="button" className="btn float-right btn-register" value="Login" onClick={this.onLoginBtnHandler}/>
+                                        <input type="button" className="btn float-right btn-register" value="Login"  onClick={this.onLoginBtnHandler}/>
                                     </div>
                                 </div>
                             </div>

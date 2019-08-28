@@ -11,6 +11,7 @@ import {
     DropdownToggle,
     DropdownMenu,
     DropdownItem } from 'reactstrap';
+import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import Cookie from 'universal-cookie'
 import { resetUser } from "./../../redux/1.actions";
@@ -30,7 +31,7 @@ class NavbarComp extends Component {
         return (
             <div>
                 <Navbar color="light" light expand="md">
-                    <NavbarBrand href='/'>Popokpedia</NavbarBrand>
+                    <Link to="/"><NavbarBrand>Popokpedia</NavbarBrand></Link>
                     <NavbarToggler onClick={() => this.setState({navbarOpen : !this.state.navbarOpen})} />
                     <Collapse navbar>
                         <Nav className="ml-auto" navbar>
@@ -47,11 +48,11 @@ class NavbarComp extends Component {
                                 </>
                                 :
                                 <>
-                                    <NavItem>
-                                        <NavLink>Login</NavLink>
+                                    <NavItem style={{borderRight : '1px solid lightgrey'}}>
+                                        <Link to="/auth"><NavLink>Login</NavLink></Link>
                                     </NavItem>
                                     <NavItem>
-                                        <NavLink>Register</NavLink>
+                                        <Link to="/auth"><NavLink>Register</NavLink></Link>
                                     </NavItem>
                                 </>
                             }
