@@ -136,5 +136,57 @@
       "deskripsi": "Kaos Terbaik",
       "id": 3
     }
+  ],
+  "cart": [
+    {
+      "productId": 1,
+      "userId": 1,
+      "quantity": "3",
+      "price": 20000,
+      "img": "https://www.jakartanotebook.com/images/products/99/63/19075/2/kaos-polos-katun-pria-o-neck-size-m-81402b-or-t-shirt-black-24.jpg",
+      "discount": 10,
+      "productName": "Kaos Polos Hitam",
+      "id": 1
+    },
+    {
+      "productId": 2,
+      "userId": 2,
+      "quantity": "5",
+      "price": 40000,
+      "img": "https://store.primagraphia.co.id/wp-content/uploads/2014/08/konsep-kaos.jpg",
+      "discount": 0,
+      "productName": "The Dark Knight",
+      "id": 2
+    },
+    {
+      "productId": 3,
+      "userId": 2,
+      "quantity": "1",
+      "price": 30000,
+      "img": "https://ecs7.tokopedia.net/img/product-1/2018/7/27/27345219/27345219_c9909d3f-8e63-4581-a242-63995611577d_1000_1000.jpg",
+      "discount": 20,
+      "productName": "Epic Comeback",
+      "id": 3
+    },
+    {
+      "productId": 1,
+      "userId": 2,
+      "quantity": 14,
+      "price": 20000,
+      "img": "https://www.jakartanotebook.com/images/products/99/63/19075/2/kaos-polos-katun-pria-o-neck-size-m-81402b-or-t-shirt-black-24.jpg",
+      "discount": 10,
+      "productName": "Kaos Polos Hitam",
+      "id": 4
+    },
+    {
+      "productId": 2,
+      "userId": 1,
+      "quantity": 2,
+      "price": 40000,
+      "img": "https://store.primagraphia.co.id/wp-content/uploads/2014/08/konsep-kaos.jpg",
+      "discount": 0,
+      "productName": "The Dark Knight",
+      "id": 5
+    }
   ]
 }

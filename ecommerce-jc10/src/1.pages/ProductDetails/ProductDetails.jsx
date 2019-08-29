@@ -1,21 +1,72 @@
 import React, { Component } from 'react';
 import {FavoriteBorderOutlined, Favorite} from '@material-ui/icons'
-
+import Axios from 'axios'
+import {urlApi} from '../../3.helpers/database'
+import {connect} from 'react-redux'
+import {Link} from 'react-router-dom'
+import swal from 'sweetalert'
 
 class ProductDetails extends Component {
 
     state = {
-        product : {
-            "id": 1,
-            "nama": "Kaos Polos Hitam",
-            "harga": 20000,
-            "category": "polos",
-            "discount": 10,
-            "deskripsi": "Kaos Terbaik",
-            "img": "https://www.jakartanotebook.com/images/products/99/63/19075/2/kaos-polos-katun-pria-o-neck-size-m-81402b-or-t-shirt-black-24.jpg"
-          },
-        wishlist : false
+        product : {},
+        wishlist : false,
+        qtyInput : 0
     }
+
+    componentDidMount(){
+        this.getProductDetails()
+    }
+
+    getProductDetails = () => {
+        // localhost:2000/products/2
+        Axios.get(urlApi + 'products/' + this.props.match.params.id)
+        .then((res) => {
+            console.log(res)
+            this.setState({product : res.data})
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }
+
+    addToCart = () => {
+        let cartObj = {
+            productId : this.state.product.id,
+            userId : this.props.id,
+            quantity : parseInt(this.state.qtyInput),
+            price : this.state.product.harga,
+            img : this.state.product.img,
+            discount : this.state.product.discount,
+            productName : this.state.product.nama
+        }
+        // localhost:2000/cart?userId=2&productId=1
+        Axios.get(urlApi + `cart?userId=${this.props.id}&productId=${this.state.product.id}`)
+        .then((res) => {
+            if(res.data.length > 0){
+                cartObj.quantity = parseInt(res.data[0].quantity) + parseInt(this.state.qtyInput)
+                Axios.put(urlApi + 'cart/' + res.data[0].id, cartObj)
+                .then((res) => {
+                    swal('Add to cart', 'Item added to cart', 'success')
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+            }else{
+                Axios.post(urlApi + 'cart', cartObj)
+                .then((res) => {
+                    swal('Add to cart', 'Item added to cart', 'success')
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+            }
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }
+    
 
     render() {
         var {nama, harga, discount, deskripsi, img} = this.state.product
@@ -54,7 +105,7 @@ class ProductDetails extends Component {
                         <div className='row'>
                             <div className='col-md-2'>
                                 <div style={{marginTop:'15px', fontSize:'16px', fontWeight:'700', color:'#606060'}}>Jumlah</div>
-                                <input ref="qty" onChange={this.qtyInputProt} type="number" min={0} className="form-control" style={{width:'60px', marginTop:'10px'}}/>
+                                <input ref="qty" onChange={(e) => this.setState({qtyInput : e.target.value})} type="number" min={0} className="form-control" style={{width:'60px', marginTop:'10px'}}/>
                             </div>
                             <div className='col-md-6'>
                                 <div style={{marginTop:'15px', fontSize:'16px', fontWeight:'700', color:'#606060'}}>Catatan Untuk Penjual (Opsional)</div>
@@ -67,21 +118,19 @@ class ProductDetails extends Component {
                                 </p>
                             </div>
                         </div>
-                        
-                        {this.props.username === '' ?
-                        <div className='row mt-4'>
-                            <input disabled type="button"   className='btn border-secondary col-md-2' value="Add To Wishlist"/>
-                            <input disabled type="button"  className='btn btn-primary col-md-3' value="Beli Sekarang"/>
-                            <input disabled type="button"   className='btn btn-success col-md-3' value="Tambah ke Keranjang"/>
-                        </div>
-                            :
                         <div className='row mt-4'>
                             <div className="col-md-4">
-                                <input  type="button" onClick={this.addToCart} className='btn btn-success btn-block' value="Tambah ke Keranjang"/>
+                                {
+                                    this.props.username !== ''
+                                    ?
+                                    <input  type="button" onClick={this.addToCart} className='btn btn-success btn-block' value="Tambah ke Keranjang"/>
+                                    :
+                                    <Link to="/auth" style={{textDecoration:'none'}}>
+                                        <input type="button" className='btn btn-success btn-block' value="Tambah ke Keranjang"/>
+                                    </Link>
+                                }
                             </div>
                         </div>
-                        }
-                        
                     </div>
                 </div>
             </div>
@@ -89,4 +138,11 @@ class ProductDetails extends Component {
     }
 }
 
-export default ProductDetails;
+const mapStateToProps = state => {
+    return {
+        username : state.user.username,
+        id : state.user.id
+    }
+}
+
+export default connect(mapStateToProps)(ProductDetails)
