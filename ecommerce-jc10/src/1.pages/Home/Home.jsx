@@ -5,6 +5,7 @@ import Axios from 'axios'
 import {urlApi} from '../../3.helpers/database'
 import swal from 'sweetalert'
 import Carousel from '../../2.components/General/Carousel'
+import {Link} from 'react-router-dom'
 
 // GIT PULL ORIGIN MASTER
 class Home extends Component {

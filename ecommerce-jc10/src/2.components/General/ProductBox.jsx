@@ -1,11 +1,14 @@
 import React from 'react';
 import './style.css'
+import {Link} from 'react-router-dom'
 
 const ProductBox = (props) => {
 
     return (
         <div className="card col-md-3 m-3" style={{width:'18rem'}}>
-            <img className="card-img-top img" height='200px' src={props.img} alt="Card" />
+            <Link to={"/product-details/" + props.id}>
+                <img className="card-img-top img" height='200px' src={props.img} alt="Card" />
+            </Link>
             {
                 props.discount > 0
                 ?
