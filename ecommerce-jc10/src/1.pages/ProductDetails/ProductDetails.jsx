@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {FavoriteBorderOutlined, Favorite} from '@material-ui/icons'
 
 
 class ProductDetails extends Component {
@@ -12,13 +13,14 @@ class ProductDetails extends Component {
             "discount": 10,
             "deskripsi": "Kaos Terbaik",
             "img": "https://www.jakartanotebook.com/images/products/99/63/19075/2/kaos-polos-katun-pria-o-neck-size-m-81402b-or-t-shirt-black-24.jpg"
-          }
+          },
+        wishlist : false
     }
 
     render() {
         var {nama, harga, discount, deskripsi, img} = this.state.product
         return (
-            <div className='container'>
+            <div className='container mt-3'>
                 <div className="row">
                     <div className='col-md-4'>
                         <div className="card" style={{width: '100%'}}>
@@ -29,7 +31,7 @@ class ProductDetails extends Component {
                     </div>
 
                     <div className='col-md-8'>
-                        <h1 style={{color:'#4c4c4c'}}>{nama}</h1>
+                        <h1 style={{color:'#4c4c4c'}}>{nama} &nbsp;{this.state.wishlist ? <Favorite onClick={() => this.setState({wishlist : !this.state.wishlist})} style={{color:'red',fontSize:32, cursor:'pointer'}}/> : <FavoriteBorderOutlined onClick={() => this.setState({wishlist : !this.state.wishlist})} style={{color:'red',fontSize:32, cursor:'pointer'}}/>}</h1>
                         <div style={{backgroundColor:'#D50000', 
                                     width:"50px",
                                     height:'22px',
@@ -74,9 +76,9 @@ class ProductDetails extends Component {
                         </div>
                             :
                         <div className='row mt-4'>
-                            <input type="button"  className='btn border-secondary col-md-2' value="Add To Wishlist"/>
-                            <input  type="button" className='btn btn-primary col-md-3' value="Beli Sekarang"/>
-                            <input  type="button" onClick={this.addToCart} className='btn btn-success col-md-3' value="Tambah ke Keranjang"/>
+                            <div className="col-md-4">
+                                <input  type="button" onClick={this.addToCart} className='btn btn-success btn-block' value="Tambah ke Keranjang"/>
+                            </div>
                         </div>
                         }
                         
