@@ -40,6 +40,9 @@ class NavbarComp extends Component {
                                 ?
                                 <>
                                     <NavItem>
+                                        <NavLink>{this.props.userObj.showId ? this.props.userObj.id : null}</NavLink>
+                                    </NavItem>
+                                    <NavItem>
                                         <NavLink>{this.props.userObj.username}</NavLink>
                                     </NavItem>
                                     <NavItem>
@@ -53,9 +56,11 @@ class NavbarComp extends Component {
                                             <DropdownItem>
                                                 Edit Profile
                                             </DropdownItem>
-                                            <DropdownItem>
-                                                Cart
-                                            </DropdownItem>
+                                            <Link to="/cart" style={{textDecoration:'none', color:'inherit'}}>
+                                                <DropdownItem>
+                                                    Cart
+                                                </DropdownItem>
+                                            </Link>
                                             <DropdownItem>
                                                 History
                                             </DropdownItem>

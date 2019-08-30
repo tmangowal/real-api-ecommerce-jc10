@@ -117,3 +117,11 @@ export const resetUser = () => {
         })
     }
 }
+
+export const toggleUserId = () => {
+    return(dispatch) => {
+        dispatch({
+            type : 'TOGGLE_ID'
+        })
+    }
+}

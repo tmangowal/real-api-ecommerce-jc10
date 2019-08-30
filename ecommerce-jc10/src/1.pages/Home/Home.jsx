@@ -6,6 +6,7 @@ import {urlApi} from '../../3.helpers/database'
 import swal from 'sweetalert'
 import Carousel from '../../2.components/General/Carousel'
 import {Link} from 'react-router-dom'
+import { toggleUserId } from '../../redux/1.actions';
 
 // GIT PULL ORIGIN MASTER
 class Home extends Component {
@@ -47,7 +48,7 @@ class Home extends Component {
                         <div className="input-group mb-2">
                             <input type="text" ref="searchBook" className="form-control" placeholder="Masukkan kata kunci ... "  />
                             <div className="input-group-append">
-                                <button className="btn btn-info" type="button" id="button-addon2" >Go</button>
+                                <button className="btn btn-info" type="button" id="button-addon2" onClick={this.props.toggleUserId}>Go</button>
                             </div>
                         </div> 
                         <div className="card p-2">
@@ -87,4 +88,4 @@ export default connect(state => {
     return {
         username : state.user.username
     }
-})(Home)
+}, {toggleUserId})(Home)
