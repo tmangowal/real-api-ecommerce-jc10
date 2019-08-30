@@ -135,6 +135,15 @@
       "img": "https://ecs7.tokopedia.net/img/product-1/2018/7/27/27345219/27345219_c9909d3f-8e63-4581-a242-63995611577d_1000_1000.jpg",
       "deskripsi": "Kaos Terbaik",
       "id": 3
+    },
+    {
+      "nama": "Something In Coffee",
+      "harga": "18000",
+      "category": "Kopi",
+      "discount": "0",
+      "deskripsi": "oke bro",
+      "img": "https://doktersehat.com/wp-content/uploads/2018/11/kopi-doktersehat.jpg",
+      "id": 4
     }
   ],
   "cart": [

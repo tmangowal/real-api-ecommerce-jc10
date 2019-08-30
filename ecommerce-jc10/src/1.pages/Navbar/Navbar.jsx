@@ -54,7 +54,7 @@ class NavbarComp extends Component {
                                         </DropdownToggle>
                                         <DropdownMenu right>
                                             <DropdownItem>
-                                                Edit Profile
+                                                Admin Dashboard
                                             </DropdownItem>
                                             <Link to="/cart" style={{textDecoration:'none', color:'inherit'}}>
                                                 <DropdownItem>
