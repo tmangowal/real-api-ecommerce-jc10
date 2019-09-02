@@ -6,7 +6,7 @@ import NavbarComp from './1.pages/Navbar/Navbar';
 import Auth from './1.pages/Auth/Auth';
 import Cookie from 'universal-cookie'
 import {connect} from 'react-redux'
-import {keepLogin} from './redux/1.actions'
+import {keepLogin, cookieChecker} from './redux/1.actions'
 import ProductDetails from './1.pages/ProductDetails/ProductDetails';
 import Cart from './1.pages/Cart/Cart';
 import AdminDashboard from './1.pages/Admin/AdminDashboard';
@@ -19,6 +19,8 @@ class App extends Component {
     let cookieVar = cookieObj.get('userData')
     if(cookieVar){
       this.props.keepLogin(cookieVar)
+    }else{
+      this.props.cookieChecker()
     }
   }
 
@@ -47,4 +49,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, {keepLogin})(withRouter(App))
+export default connect(mapStateToProps, {keepLogin, cookieChecker})(withRouter(App))

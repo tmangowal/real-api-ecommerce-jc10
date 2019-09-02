@@ -16,6 +16,8 @@ export default (state = INITIAL_STATE, action) => {
             return {...INITIAL_STATE, cookie : true}
         case 'TOGGLE_ID':
             return {...state, showId : !state.showId, cookie : true}
+        case 'COOKIE_CHECKED':
+            return {...state, cookie : true}
         default:
             return state
     }

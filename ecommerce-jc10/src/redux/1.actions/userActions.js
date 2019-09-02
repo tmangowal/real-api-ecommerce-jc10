@@ -129,3 +129,11 @@ export const toggleUserId = () => {
         })
     }
 }
+
+export const cookieChecker = () => {
+    return(dispatch) => {
+        dispatch({
+            type : 'COOKIE_CHECKED'
+        })
+    }
+}

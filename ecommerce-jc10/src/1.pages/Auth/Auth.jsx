@@ -77,6 +77,13 @@ class Auth extends Component {
         }
     }
 
+    onBtnEnter = (e) => {
+        if(e.key === 'Enter'){
+            // alert("masuk")
+            this.refs.loginBtn.click()
+        }
+    }
+
     render() {
         if(this.props.username !== ''){
             return <Redirect to="/" exact />
@@ -163,13 +170,13 @@ class Auth extends Component {
                                     </div>
                                     <div className="col-6">
                                         <div className="form-group">
-                                            <input type="password" className="form-control" placeholder="Password" onChange={(e) => this.setState({loginPassword : e.target.value})}/>
+                                            <input type="password" className="form-control" placeholder="Password" onKeyDown={this.onBtnEnter} onChange={(e) => this.setState({loginPassword : e.target.value})}/>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="col-12">
-                                        <input type="button" className="btn float-right btn-register" value="Login"  onClick={this.onLoginBtnHandler}/>
+                                        <input type="button" className="btn float-right btn-register" value="Login" ref='loginBtn' onClick={this.onLoginBtnHandler}/>
                                     </div>
                                 </div>
                             </div>
