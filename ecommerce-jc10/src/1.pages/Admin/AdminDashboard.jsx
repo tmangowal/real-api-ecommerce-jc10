@@ -4,6 +4,8 @@ import swal from 'sweetalert'
 import {urlApi} from '../../3.helpers/database'
 import './style.css'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import {connect} from 'react-redux'
+import {Redirect} from 'react-router-dom'
 
 
 class AdminDashboard extends Component {
@@ -17,6 +19,7 @@ class AdminDashboard extends Component {
         inputImg : '',
         contentPerPage : 3,
         page : 0,
+        maxPage : 0,
         editMode : false,
         editItem : null
     }
@@ -28,7 +31,7 @@ class AdminDashboard extends Component {
     getDataProducts = () => {
         Axios.get(urlApi + 'products')
         .then((res) => {
-            this.setState({productData : res.data})
+            this.setState({productData : res.data, maxPage : Math.ceil(res.data.length / this.state.contentPerPage) - 1})
         })
         .catch((err) => {
             console.log(err)
@@ -98,9 +101,14 @@ class AdminDashboard extends Component {
             console.log(err)
             swal('Error', 'Ada masalah bro', 'error')
         })
+
+        this.setState({editMode : false, editItem : null})
     }
 
     render() {
+        if(this.props.role !== 'admin')
+        return <Redirect to="/" />
+
         return (
             <div className="container">
                 <div className="row">
@@ -129,8 +137,24 @@ class AdminDashboard extends Component {
                             </div>
                             <div className="card-footer align-items-center">
                                 <div className="row">
-                                    <div className="col-6"></div>
-                                    <div className="col-6"><input onClick={() => this.setState({page : this.state.page + 1})} value="Next Page >>" type="button" className="btn btn-block btn-secondary"/></div>
+                                    <div className="col-6">
+                                        {
+                                            this.state.page == 0 
+                                            ? 
+                                            null 
+                                            :
+                                            <input onClick={() => this.setState({page : this.state.page - 1})} value="<< Previous Page" type="button" className="btn btn-block btn-secondary"/>
+                                        }
+                                    </div>
+                                    <div className="col-6">
+                                        {
+                                            this.state.page < this.state.maxPage
+                                            ?
+                                            <input onClick={() => this.setState({page : this.state.page + 1})} value="Next Page >>" type="button" className="btn btn-block btn-secondary"/>
+                                            :
+                                            null
+                                        }
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -172,56 +196,52 @@ class AdminDashboard extends Component {
                         </div>
                     </div>
                 </div>
+                {this.state.editMode ? 
                 <Modal isOpen={this.state.editMode}>
-                    <ModalHeader>
-
+                    <ModalHeader toggle={() => this.setState({editMode : false, editItem : null})}>
+                        Edit {this.state.editItem.nama}
                     </ModalHeader>
                     <ModalBody>
-
-                    </ModalBody>
-                    <ModalFooter>
-
-                    </ModalFooter>
-                </Modal>
-                <div className="row mt-3">
-                    <div className="col-12">
-                        <div className="card shadow">
-                            <div className="card-header">
-                                <h3>Add Product</h3>
-                            </div>
-                            <div className="card-body">
+                        <div className="row mt-3">
+                            <div className="col-12">
                                 <div className="row">
                                     <div className="col-4">
-                                        <input type="text" ref="editName" className="form-control" placeholder="Product Name"/>
+                                        <input type="text" ref="editName" className="form-control" placeholder={this.state.editItem.nama}/>
                                     </div>
                                     <div className="col-4">
-                                        <input type="number" ref="editPrice" className="form-control" placeholder="Price"/>
+                                        <input type="number" ref="editPrice" className="form-control" placeholder={this.state.editItem.harga}/>
                                     </div>
                                     <div className="col-4">
-                                        <input type="number" ref="editDiscount" className="form-control" placeholder="Discount"/>
+                                        <input type="number" ref="editDiscount" className="form-control" placeholder={this.state.editItem.discount}/>
                                     </div>
                                 </div>
                                 <div className="row mt-3">
                                     <div className="col-4">
-                                        <input type="text" ref="editCategory" className="form-control" placeholder="Category"/>
+                                        <input type="text" ref="editCategory" className="form-control" placeholder={this.state.editItem.category}/>
                                     </div>
                                     <div className="col-4">
-                                        <input type="text" ref="editDesc" className="form-control" placeholder="Description"/>
+                                        <input type="text" ref="editDesc" className="form-control" placeholder={this.state.editItem.deskripsi}/>
                                     </div>
                                     <div className="col-4">
-                                        <input type="text" ref="editImg" className="form-control" placeholder="Image URL"/>
+                                        <input type="text" ref="editImg" className="form-control" placeholder={this.state.editItem.img}/>
                                     </div>
-                                </div>
-                                <div className="row mt-3">
-                                    <input type="button" className="btn btn-success btn-block" value="SAVE"/>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </ModalBody>
+                    <ModalFooter>
+                        <input type="button" className="btn btn-primary btn-block" value="SAVE" onClick={this.onBtnSaveEdit} />
+                    </ModalFooter>
+                </Modal> : null}
             </div>
         );
     }
 }
 
-export default AdminDashboard;
+const mapStateToProps = (state) => {
+    return {
+        role : state.user.role
+    }
+}
+
+export default connect(mapStateToProps)(AdminDashboard);

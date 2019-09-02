@@ -23,19 +23,28 @@ class App extends Component {
   }
 
   render(){
-    return (
-      <div>
-        <NavbarComp/>
-        <Switch>
-          <Route component={Home} path='/' exact />
-          <Route component={Auth} path='/auth' exact />
-          <Route component={ProductDetails} path='/product-details/:id' exact />
-          <Route component={Cart} path='/cart' exact />
-          <Route component={AdminDashboard} path='/admin/dashboard' exact />
-        </Switch>
-      </div>
-    )
+    if(this.props.globalCookie){
+      return (
+        <div>
+          <NavbarComp/>
+          <Switch>
+            <Route component={Home} path='/' exact />
+            <Route component={Auth} path='/auth' exact />
+            <Route component={ProductDetails} path='/product-details/:id' exact />
+            <Route component={Cart} path='/cart' exact />
+            <Route component={AdminDashboard} path='/admin/dashboard' exact />
+          </Switch>
+        </div>
+      )
+    }
+    return <div>Loading ...</div>
   }
 }
 
-export default connect(null, {keepLogin})(withRouter(App))
+const mapStateToProps = (state) => {
+  return {
+    globalCookie : state.user.cookie
+  }
+}
+
+export default connect(mapStateToProps, {keepLogin})(withRouter(App))

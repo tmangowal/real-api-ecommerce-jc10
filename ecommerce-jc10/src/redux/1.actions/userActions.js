@@ -1,6 +1,9 @@
 import Axios from 'axios'
 import {urlApi} from '../../3.helpers/database'
 import swal from 'sweetalert'
+import Cookie from 'universal-cookie'
+
+const cookieObj = new Cookie()
 
 export const onLogin = (userObject) => {
     /**
@@ -111,6 +114,7 @@ export const keepLogin = (cookieData) => {
 }
 
 export const resetUser = () => {
+
     return (dispatch) => {
         dispatch({
             type : 'RESET_USER'
