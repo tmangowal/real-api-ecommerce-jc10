@@ -53,9 +53,17 @@ class NavbarComp extends Component {
                                             Options
                                         </DropdownToggle>
                                         <DropdownMenu right>
-                                            <DropdownItem>
-                                                Admin Dashboard
-                                            </DropdownItem>
+                                            {
+                                                this.props.userObj.role == 'admin'
+                                                ?
+                                                <Link style={{textDecoration:'none', color:'inherit'}} to="/admin/dashboard">
+                                                    <DropdownItem>
+                                                        Admin Dashboard
+                                                    </DropdownItem>
+                                                </Link>
+                                                :
+                                                null
+                                            }
                                             <Link to="/cart" style={{textDecoration:'none', color:'inherit'}}>
                                                 <DropdownItem>
                                                     Cart
