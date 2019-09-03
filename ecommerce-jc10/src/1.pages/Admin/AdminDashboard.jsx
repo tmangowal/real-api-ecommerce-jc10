@@ -7,12 +7,17 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import ManageProduct from './ManageProduct';
+import ParaSultan from './ParaSultan';
 
 
 class AdminDashboard extends Component {
     state = {
         tabMenu : 1
     }
+
+    // componentDidMount(){
+    //     Axios.request
+    // }
 
     render() {
         if(this.props.role !== 'admin')
@@ -27,6 +32,7 @@ class AdminDashboard extends Component {
                 </div>
                 <div className="admin-content">
                     {this.state.tabMenu == 1 ? <ManageProduct/> : null}
+                    {this.state.tabMenu == 3 ? <ParaSultan/> : null}
                 </div>
             </>
         );
