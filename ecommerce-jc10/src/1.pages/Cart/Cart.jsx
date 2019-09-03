@@ -3,10 +3,16 @@ import Axios from 'axios'
 import {connect} from 'react-redux'
 import {urlApi} from '../../3.helpers/database'
 import swal from 'sweetalert'
+import moment from 'moment'
 
 class Cart extends Component {
     state = {
-        cartData : []
+        cartData : [],
+        isCheckout : false,
+        inputPenerima : '',
+        inputAlamat : '',
+        inputKodePos : '',
+        inputUang : 0
     }
 
     componentWillReceiveProps(newProps){
@@ -77,6 +83,18 @@ class Cart extends Component {
         }
     }
 
+    renderTotalCart = () => {
+        let result = 0
+        this.state.cartData.map(val => {
+            result += val.quantity * (val.price - (val.price * (val.discount / 100)))
+        })
+
+        return result
+    }
+
+    onBtnPay = () => {
+    }
+
     render() {
         return (
             <div className="container">
@@ -94,6 +112,43 @@ class Cart extends Component {
                         {this.renderCart()}
                     </tbody>
                 </table>
+                <div className="row">
+                    <div className="col-8">
+                        <input type="button" onClick={() => this.setState({isCheckout : !this.state.isCheckout})} className="btn btn-success btn-block" value="CHECKOUT"/>
+                    </div>
+                    <div className="col-4">
+                        <h3>Total Harga = {this.renderTotalCart()}</h3>
+                    </div>
+                </div>
+                {this.state.isCheckout
+                ?
+                <div className="row mt-4">
+                    <div className="col-10">
+                        <div className="row">
+                            <div className="col-6">
+                                <input type="text" onChange={(e) => {this.setState({inputPenerima : e.target.value})}} className="form-control" placeholder="Nama Penerima"/>
+                            </div>
+                            <div className="col-6">
+                                <input type="button" value="PAY" onClick={this.onBtnPay} className="btn btn-primary btn-block"/>
+                            </div>
+                        </div>
+                        <div className="row mt-3">
+                            <div className="col-8">
+                                <input type="text" onChange={(e) => {this.setState({inputAlamat : e.target.value})}} className="form-control" placeholder="Alamat"/>
+                            </div>
+                            <div className="col-4">
+                                <input type="text" onChange={(e) => {this.setState({inputKodePos : e.target.value})}} className="form-control" placeholder="Kode Pos"/>
+                            </div>
+                        </div>
+                        <div className="row mt-3">
+                            <div className="col-12">
+                                <input type="number" onChange={(e) => {this.setState({inputUang : e.target.value})}} className="form-control" placeholder="Uang situ"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                :
+                null}
             </div>
         );
     }
