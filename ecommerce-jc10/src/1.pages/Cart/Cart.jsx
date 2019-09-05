@@ -4,6 +4,9 @@ import {connect} from 'react-redux'
 import {urlApi} from '../../3.helpers/database'
 import swal from 'sweetalert'
 import moment from 'moment'
+import {Link} from 'react-router-dom'
+import { getCartLength } from '../../redux/1.actions';
+
 
 class Cart extends Component {
     state = {
@@ -17,6 +20,10 @@ class Cart extends Component {
 
     componentWillReceiveProps(newProps){
         this.getDataCart(newProps.id)
+    }
+
+    componentDidUpdate(){
+        this.props.getCartLength(this.state.cartData.length)
     }
 
     componentDidMount(){
@@ -93,33 +100,63 @@ class Cart extends Component {
     }
 
     onBtnPay = () => {
+        let d = new Date()
+        let newData = {
+            userId: this.props.id,
+            items: this.state.cartData,
+            totalPrice: this.renderTotalCart(),
+            recipient: this.state.inputPenerima,
+            postalCode: this.state.inputKodePos,
+            address: this.state.inputAlamat,
+            time: `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
+        }
+        Axios.post(urlApi + 'history', newData)
+        .then(res => {
+            for(var i = 0; i < this.state.cartData.length; i++){
+                Axios.delete(urlApi + 'cart/' + this.state.cartData[i].id)
+                .then(res => {
+
+                })
+                .catch(err => console.log(err))
+            }
+            this.getDataCart(this.props.id)
+            this.setState({isCheckout: false})
+        })
+        .catch(err => console.log(err))
     }
 
     render() {
         return (
             <div className="container">
-                <table className="table mt-3 text-center">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Total Price</th>
-                            <th>Delete</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.renderCart()}
-                    </tbody>
-                </table>
-                <div className="row">
-                    <div className="col-8">
-                        <input type="button" onClick={() => this.setState({isCheckout : !this.state.isCheckout})} className="btn btn-success btn-block" value="CHECKOUT"/>
-                    </div>
-                    <div className="col-4">
-                        <h3>Total Harga = {this.renderTotalCart()}</h3>
-                    </div>
-                </div>
+                {
+                    this.state.cartData.length > 0 ?
+                    <>
+                        <table className="table mt-3 text-center">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total Price</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {this.renderCart()}
+                            </tbody>
+                        </table>
+                        <div className="row">
+                            <div className="col-8">
+                                <input type="button" onClick={() => this.setState({isCheckout : !this.state.isCheckout})} className="btn btn-success btn-block" value="CHECKOUT"/>
+                            </div>
+                            <div className="col-4">
+                                <h3>Total Harga = {this.renderTotalCart()}</h3>
+                            </div>
+                        </div>
+                    </>
+                    :
+                    <div className="mt-3 alert alert-danger">Your Cart is empty, Let's <Link style={{textDecoration: 'underline', color: 'green'}} to="/">Go Shopping</Link></div>
+                }
                 {this.state.isCheckout
                 ?
                 <div className="row mt-4">
@@ -161,4 +198,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(Cart)
+export default connect(mapStateToProps, {getCartLength})(Cart)

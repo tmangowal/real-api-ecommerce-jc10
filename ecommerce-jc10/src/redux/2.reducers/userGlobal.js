@@ -1,8 +1,11 @@
+import {
+    TESTING
+} from '../types'
 const INITIAL_STATE = {id : 0, username : '', role : '', cookie : false, loading : false, msg : '',showId : false}
 
 export default (state = INITIAL_STATE, action) => {
     switch(action.type){
-        case 'TESTING':
+        case TESTING:
             return {...INITIAL_STATE, username : 'TEST', cookie : true}
         case 'LOGIN_SUCCESS':
             return {...INITIAL_STATE, username : action.payload.a, id : action.payload.c, role : action.payload.b, cookie:true}

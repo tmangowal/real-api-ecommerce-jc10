@@ -6,10 +6,12 @@ import NavbarComp from './1.pages/Navbar/Navbar';
 import Auth from './1.pages/Auth/Auth';
 import Cookie from 'universal-cookie'
 import {connect} from 'react-redux'
-import {keepLogin, cookieChecker} from './redux/1.actions'
+import {keepLogin, cookieChecker, getCartLength} from './redux/1.actions'
 import ProductDetails from './1.pages/ProductDetails/ProductDetails';
 import Cart from './1.pages/Cart/Cart';
 import AdminDashboard from './1.pages/Admin/AdminDashboard';
+import HistoryComp from './1.pages/History/History'
+import Wishlist from './1.pages/Wishlist/Wishlist';
 
 
 let cookieObj = new Cookie()
@@ -34,6 +36,8 @@ class App extends Component {
             <Route component={Auth} path='/auth' exact />
             <Route component={ProductDetails} path='/product-details/:id' exact />
             <Route component={Cart} path='/cart' exact />
+            <Route component={HistoryComp} path='/history' exact />
+            <Route component={Wishlist} path='/wishlist' exact />
             <Route component={AdminDashboard} path='/admin/dashboard' exact />
           </Switch>
         </div>
@@ -49,4 +53,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, {keepLogin, cookieChecker})(withRouter(App))
+export default connect(mapStateToProps, {keepLogin, cookieChecker, getCartLength})(withRouter(App))

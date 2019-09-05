@@ -14,7 +14,10 @@ import {
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import Cookie from 'universal-cookie'
-import { resetUser } from "./../../redux/1.actions";
+import { resetUser, getCartLength } from "./../../redux/1.actions";
+import Axios from 'axios';
+import { urlApi } from '../../3.helpers/database';
+
 
 let cookieObj = new Cookie()
 class NavbarComp extends Component {
@@ -25,6 +28,16 @@ class NavbarComp extends Component {
     onBtnLogout = () => {
         cookieObj.remove('userData')
         this.props.resetUser()
+    }
+
+    componentDidMount () {
+        Axios.get(urlApi + 'cart?userId=' + this.props.userObj.id)
+        .then(res => {
+            this.props.getCartLength(res.data.length)
+        })
+        .catch(err => {
+            console.log(err)
+        })
     }
 
     render() {
@@ -40,7 +53,7 @@ class NavbarComp extends Component {
                                 ?
                                 <>
                                     <NavItem>
-                                        <NavLink>{this.props.userObj.showId ? this.props.userObj.id : null}</NavLink>
+                                        <NavLink>{this.props.cartLength}</NavLink>
                                     </NavItem>
                                     <NavItem>
                                         <NavLink>{this.props.userObj.username}</NavLink>
@@ -69,9 +82,16 @@ class NavbarComp extends Component {
                                                     Cart
                                                 </DropdownItem>
                                             </Link>
-                                            <DropdownItem>
-                                                History
-                                            </DropdownItem>
+                                            <Link to="/history" style={{textDecoration:'none', color:'inherit'}}>
+                                                <DropdownItem>
+                                                    History
+                                                </DropdownItem>
+                                            </Link>
+                                            <Link to="/wishlist" style={{textDecoration:'none', color:'inherit'}}>
+                                                <DropdownItem>
+                                                    Wishlist
+                                                </DropdownItem>
+                                            </Link>
                                             <DropdownItem divider />
                                             <DropdownItem onClick={this.onBtnLogout}>
                                                 Logout
@@ -99,8 +119,9 @@ class NavbarComp extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        userObj : state.user
+        userObj : state.user,
+        cartLength: state.cart.cartLength
     }
 }
 
-export default connect(mapStateToProps, {resetUser})(NavbarComp)
+export default connect(mapStateToProps, {resetUser, getCartLength})(NavbarComp)

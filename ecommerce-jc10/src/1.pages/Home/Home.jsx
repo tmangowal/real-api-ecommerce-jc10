@@ -6,7 +6,7 @@ import {urlApi} from '../../3.helpers/database'
 import swal from 'sweetalert'
 import Carousel from '../../2.components/General/Carousel'
 import {Link} from 'react-router-dom'
-import { toggleUserId } from '../../redux/1.actions';
+import { toggleUserId, getCartLength } from '../../redux/1.actions';
 
 // GIT PULL ORIGIN MASTER
 class Home extends Component {
@@ -14,7 +14,54 @@ class Home extends Component {
         productData : []
     }
 
-    
+    checkCartLength = () => {
+        Axios.get(urlApi + 'cart?userId=' + this.props.id)
+        .then(res => {
+            this.props.getCartLength(res.data.length)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+
+    addToCart = (productObj) => {
+        let cartObj = {
+            productId : productObj.id,
+            userId : this.props.id,
+            quantity : 1,
+            price : productObj.harga,
+            img : productObj.img,
+            discount : productObj.discount,
+            productName : productObj.nama
+        }
+        // localhost:2000/cart?userId=2&productId=1
+        Axios.get(urlApi + `cart?userId=${this.props.id}&productId=${productObj.id}`)
+        .then((res) => {
+            if(res.data.length > 0){
+                cartObj.quantity = parseInt(res.data[0].quantity) + parseInt(1)
+                Axios.put(urlApi + 'cart/' + res.data[0].id, cartObj)
+                .then((res) => {
+                    swal('Add to cart', 'Item added to cart', 'success')
+                    this.checkCartLength()
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+            }else{
+                Axios.post(urlApi + 'cart', cartObj)
+                .then((res) => {
+                    swal('Add to cart', 'Item added to cart', 'success')
+                    this.checkCartLength()
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+            }
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }
 
     componentDidMount(){
         this.getDataProducts()
@@ -34,7 +81,7 @@ class Home extends Component {
     renderProducts = () => {
         let jsx = this.state.productData.map(val => {
             return(
-                <ProductBox nama={val.nama} harga={val.harga} discount={val.discount} img={val.img} id={val.id} />
+                <ProductBox nama={val.nama} harga={val.harga} discount={val.discount} img={val.img} id={val.id} addCartFn={() => this.addToCart(val)}/>
             )
         })
         return jsx
@@ -86,6 +133,7 @@ class Home extends Component {
 
 export default connect(state => {
     return {
-        username : state.user.username
+        username : state.user.username,
+        id: state.user.id
     }
-}, {toggleUserId})(Home)
+}, {toggleUserId, getCartLength})(Home)

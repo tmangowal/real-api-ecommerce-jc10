@@ -5,6 +5,7 @@ import {urlApi} from '../../3.helpers/database'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import swal from 'sweetalert'
+import { getCartLength } from '../../redux/1.actions';
 
 class ProductDetails extends Component {
 
@@ -16,6 +17,7 @@ class ProductDetails extends Component {
 
     componentDidMount(){
         this.getProductDetails()
+        this.getWishlist()
     }
 
     getProductDetails = () => {
@@ -26,6 +28,46 @@ class ProductDetails extends Component {
             this.setState({product : res.data})
         })
         .catch((err) => {
+            console.log(err)
+        })
+    }
+
+    getWishlist = () => {
+        Axios.get(urlApi + `wishlist?userId=${this.props.id}&productId=${this.props.match.params.id}`)
+        .then(res => {
+            if(res.data.length > 0){
+                this.setState({wishlist: true})
+            }
+        })
+        .catch(err => console.log(err))
+    }
+
+    toggleWishlist = () => {
+        Axios.get(urlApi + `wishlist?userId=${this.props.id}&productId=${this.props.match.params.id}`)
+        .then(res => {
+            if(this.state.wishlist){
+                Axios.delete(urlApi + 'wishlist/' + res.data[0].id)
+                .then(res => {
+                    this.setState({wishlist: false})
+                })
+                .catch(err => console.log(err))
+            }else{
+                Axios.post(urlApi + 'wishlist', {productId: this.props.match.params.id, userId: this.props.id, productName: this.state.product.nama})
+                .then(res => {
+                    this.setState({wishlist: true})
+                })
+                .catch(err => console.log(err))
+            }
+        })
+        .catch(err => console.log(err))
+    }
+
+    checkCartLength = () => {
+        Axios.get(urlApi + 'cart?userId=' + this.props.id)
+        .then(res => {
+            this.props.getCartLength(res.data.length)
+        })
+        .catch(err => {
             console.log(err)
         })
     }
@@ -48,6 +90,7 @@ class ProductDetails extends Component {
                 Axios.put(urlApi + 'cart/' + res.data[0].id, cartObj)
                 .then((res) => {
                     swal('Add to cart', 'Item added to cart', 'success')
+                    this.checkCartLength()
                 })
                 .catch((err) => {
                     console.log(err)
@@ -56,6 +99,7 @@ class ProductDetails extends Component {
                 Axios.post(urlApi + 'cart', cartObj)
                 .then((res) => {
                     swal('Add to cart', 'Item added to cart', 'success')
+                    this.checkCartLength()
                 })
                 .catch((err) => {
                     console.log(err)
@@ -82,7 +126,7 @@ class ProductDetails extends Component {
                     </div>
 
                     <div className='col-md-8'>
-                        <h1 style={{color:'#4c4c4c'}}>{nama} &nbsp;{this.state.wishlist ? <Favorite onClick={() => this.setState({wishlist : !this.state.wishlist})} style={{color:'red',fontSize:32, cursor:'pointer'}}/> : <FavoriteBorderOutlined onClick={() => this.setState({wishlist : !this.state.wishlist})} style={{color:'red',fontSize:32, cursor:'pointer'}}/>}</h1>
+                        <h1 style={{color:'#4c4c4c'}}>{nama} &nbsp;{this.state.wishlist ? <Favorite onClick={this.toggleWishlist} style={{color:'red',fontSize:32, cursor:'pointer'}}/> : <FavoriteBorderOutlined onClick={this.toggleWishlist} style={{color:'red',fontSize:32, cursor:'pointer'}}/>}</h1>
                         <div style={{backgroundColor:'#D50000', 
                                     width:"50px",
                                     height:'22px',
@@ -145,4 +189,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(ProductDetails)
+export default connect(mapStateToProps, {getCartLength})(ProductDetails)

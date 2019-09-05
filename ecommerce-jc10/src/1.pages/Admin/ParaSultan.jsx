@@ -1,18 +1,39 @@
 import React, { Component } from 'react';
 import Axios from 'axios'
 import { urlApi } from '../../3.helpers/database';
+import {Link} from 'react-router-dom'
 
 class ParaSultan extends Component {
     state = {
         data : [],
-        isiCart : 0
+        isiCart : 0,
+        sangSultan: {},
+        price: 0
     }
 
     componentDidMount(){
-        Axios.get(urlApi + 'cart?userId=1')
+        this.cariSultan()
+    }
+
+    cariSultan = () => {
+        let sultan = {
+            totalPrice: 0
+        };
+
+        Axios.get(urlApi + 'history')
         .then(res => {
-            console.log(res)
-            this.setState({isiCart : res.data.length})
+            res.data.forEach(val => {
+                if(val.totalPrice > sultan.totalPrice){
+                    sultan = val
+                }
+            })
+            Axios.get(urlApi + 'users/' + sultan.userId)
+            .then(res => {
+                this.setState({sangSultan: res.data, price: sultan.totalPrice})
+            })
+            .catch(err => {
+                console.log(err)
+            })
         })
         .catch(err => {
             console.log(err)
@@ -20,13 +41,13 @@ class ParaSultan extends Component {
     }
 
     renderResult = () => {
-        let totalQty = 0
+        // let totalQty = 0
 
-        this.state.data.map(val => {
-            totalQty += parseInt(val.quantity)
-        })
+        // this.state.data.map(val => {
+        //     totalQty += parseInt(val.quantity)
+        // })
 
-        return totalQty
+        // return totalQty
     }
 
     render() {
@@ -36,13 +57,13 @@ class ParaSultan extends Component {
                     <div className="col-12">
                         <div className="card shadow mt-3">
                             <div className="card-header border-0 pt-5">
-                                {/* <h3>Admin Dashboard</h3> */}
+                                <h3>User Tersultan adalah {this.state.sangSultan.username}</h3>
                             </div>
                             <div className="card-body">
-                                {this.state.isiCart}
+                                Total belanjaan tertingginya adalah Rp.{new Intl.NumberFormat('id-ID').format(this.state.price)}
                             </div>
                             <div className="card-footer align-items-center">
-                                
+                                <h5>Ayo <Link to="/">kalahkan {this.state.sangSultan.username}!</Link></h5>
                             </div>
                         </div>
                     </div>
